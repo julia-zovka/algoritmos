@@ -1,41 +1,62 @@
 using namespace std;
-#include <iostream>;
-#include <vector>;
+#include <iostream>
+#include <vector>
 
 
+void merge(vector<int>& entrada, int inicio, int middle, int fim){
 
-vector<int> mergeSort(int tamanho, vector<int> prime ){
-    int meio=tamanho/2;
-}
+    //cria os dois vetores
+    int n1 = middle - inicio + 1;
+    int n2 = fim - middle;
 
-vector<int> merge(vector<int>& A, vector<int>& B){
-    vector<int> novo;
-    int iA=0;
-    int iB=0;
+    vector<int> A(n1), B(n2);
+
+    for (int i = 0; i < n1; i++)
+        A[i] = entrada[inicio + i];
+    for (int j = 0; j < n2; j++)
+        B[j] = entrada[middle +1+ j];
+    
+    //reeescreever o vetor original
+    int iA = 0, iB = 0, k = inicio;
+
     while(iA< A.size() && iB <B.size()){// se for igual [e porque] j[a comparou o ultimo , começa do 0 e termona no size-1    }
         if(A[iA]<=B[iB]){
-            novo.push_back(A[iA]);
+            entrada[k]=A[iA];
             iA++;
         }
         else{
-            novo.push_back(B[iB]);
+            entrada[k]=B[iB];
             iB++;
         }
+        k++;
     }
-    
+
     // já acabopu açgum dos vetores
     while(iA<A.size()){
-        novo.push_back(A[iA]);
-            iA++;
+        entrada[k]=A[iA];
+        iA++;
+        k++;
+
     }
     while(iB<B.size()){
-        novo.push_back(B[iB]);
+        entrada[k]=B[iB];
         iB++;
+        k++;
+
     }
-    return novo;
-};
+}
 
-
+void mergeSort(vector<int>& entrada, int inicio, int fim) {   
+    
+    if(inicio<fim){
+        
+        int middle = inicio + (fim-inicio) / 2;
+        mergeSort(entrada, inicio, middle);
+        mergeSort(entrada, middle + 1, fim);
+        merge(entrada, inicio, middle, fim);
+    }
+    
+}
 
 int main(){
 
@@ -44,18 +65,22 @@ int main(){
     for(int i=0; i < casos; i++){
         cin>>tamanho;
         if(tamanho>1){
-            vector<int> prime;
+            vector<int> entrada;
             for(int j=0; j < tamanho;j++){
                 cin>>num;
-                prime.push_back(num);
+                entrada.push_back(num);
             }
-            vector<int> r1=mergeSort(tamanho, prime);
-   
-        }
+            mergeSort(entrada, 0, entrada.size() - 1);
+
+            for(int x : entrada){
+                cout<<x<<" ";
+            }
+            cout<<endl;
+        }   
+        
         else{
             cin>>num;
             cout<<num<<endl;
-            return 0;
         }
 
     }
