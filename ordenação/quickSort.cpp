@@ -3,36 +3,33 @@ using namespace std;
 #include <vector>
 
 int partition(vector<int>& lista, int l, int r){
-    int i=l+1;
-    int j=r;
+    int i=l;
+    int j=r+1;
     int p=lista[l];
+    int temp;
 
     //comeca a escanear do seggundo, o primeiro [e o pivot]
     //i left-right
     //j right to left
-    while(i<j){
-        while (lista[i]<p && i<r){// para se maior ou igualk ao pivot
-            i++;}
-        
-        while(lista[j]>p){
-            j--;}
-        //ai e aj
-        int temp;
+    do {
+        do{
+            i++;
+        }while(lista[i]<p && i<r);
+        do{
+            j--;
+        }while(lista[j]>p);
         temp=lista[i];
         lista[i]=lista[j];
-        lista[j]=temp;
-    }
-    //desfaz
-    int temp2;
-    temp2=lista[i];
+        lista[j]=temp;     
+    }while(i<j);
+
+    temp=lista[i];
     lista[i]=lista[j];
-    lista[j]=temp2;
-    
+    lista[j]=temp; 
     //al e aj
-    int temp3;
-    temp3=lista[l];
+    temp=lista[l];
     lista[l]=lista[j];
-    lista[j]=temp3;
+    lista[j]=temp;
     return j;
 
 }
