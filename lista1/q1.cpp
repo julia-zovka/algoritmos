@@ -50,9 +50,8 @@ void mergeSort(vector<int>& entrada, int inicio, int fim) {
     
     if(inicio<fim){
         
-
+        //int middle = inicio + (fim-inicio) / 2;
         int middle=(inicio+fim)/2;
-
         mergeSort(entrada, inicio, middle);
         mergeSort(entrada, middle + 1, fim);
         merge(entrada, inicio, middle, fim);
@@ -60,32 +59,28 @@ void mergeSort(vector<int>& entrada, int inicio, int fim) {
     
 }
 
+
+//lista com 2n numeros, aplica algoritmo de ordenacao e soma 
 int main(){
 
-    int casos, tamanho,num;
-    cin>>casos;
-    for(int i=0; i < casos; i++){
-        cin>>tamanho;
-        if(tamanho>1){
-            vector<int> entrada;
-            for(int j=0; j < tamanho;j++){
-                cin>>num;
-                entrada.push_back(num);
-            }
-            mergeSort(entrada, 0, entrada.size() - 1);
-
-            for(int x : entrada){
-                cout<<x<<" ";
-            }
-            cout<<endl;
-        }   
-        
-        else{
+    int caso, n, num, soma;
+    cin>>caso;
+    for(int i =0;i<caso;i++){
+        soma=0;
+        cin>>n;
+        vector<int> lista(2*n);
+        for(int j=0; j<2*n;j++){
             cin>>num;
-            cout<<num<<endl;
+            lista[j]=num;
         }
-
+        mergeSort(lista,0,lista.size()-1);
+        //soma
+        for(int s=0; s<n; s++){//tenho n tentativas
+            soma+=lista[lista.size()-2];//o menor entre os maiores
+            //tira os dois da lista
+            lista.pop_back();
+            lista.pop_back();
+        }
+        cout<<soma<<endl;
     }
-
-
-};
+}

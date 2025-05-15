@@ -3,6 +3,24 @@ using namespace std;
 #include <vector>
 
 
+int binarySearch(vector<int>& A,int l, int r, int k){
+    //l=0;
+    //r=A.size()-1;
+    if(r>=l){
+        int middle=(l+r)/2;
+        if(k==A[middle]){
+            return middle;}
+        else if(k<A[middle]){
+            return binarySearch(A,l,middle-1, k);}
+        else{//maior}
+             return binarySearch(A,middle+1,r,k);}
+
+    }
+    else{
+        return -1;
+    }
+}
+
 void merge(vector<int>& entrada, int inicio, int middle, int fim){
 
     //cria os dois vetores
@@ -50,42 +68,31 @@ void mergeSort(vector<int>& entrada, int inicio, int fim) {
     
     if(inicio<fim){
         
-
+        //int middle = inicio + (fim-inicio) / 2;
         int middle=(inicio+fim)/2;
-
         mergeSort(entrada, inicio, middle);
         mergeSort(entrada, middle + 1, fim);
         merge(entrada, inicio, middle, fim);
     }
     
 }
-
 int main(){
-
-    int casos, tamanho,num;
-    cin>>casos;
-    for(int i=0; i < casos; i++){
-        cin>>tamanho;
-        if(tamanho>1){
-            vector<int> entrada;
-            for(int j=0; j < tamanho;j++){
-                cin>>num;
-                entrada.push_back(num);
-            }
-            mergeSort(entrada, 0, entrada.size() - 1);
-
-            for(int x : entrada){
-                cout<<x<<" ";
-            }
-            cout<<endl;
-        }   
-        
-        else{
-            cin>>num;
-            cout<<num<<endl;
-        }
+    int q_num,num, k,pares;
+    pares=0;
+    cin>>q_num;
+    cin>>k;
+    vector<int> A;
+    for(int i=0; i<q_num;i++){
+        cin>>num;
+        A.push_back(num);
+    }
+    mergeSort(A,0,A.size()-1);
+    //achar o numero i somado a k
+    for(int x:A){
+        int res=binarySearch(A, 0, A.size()-1, x+k);
+        if(res!=-1){//achou um par que a diferen;a de a chave
+            pares+=1;}
+    }
+    cout<<pares<<endl;
 
     }
-
-
-};
