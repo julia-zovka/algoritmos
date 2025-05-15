@@ -50,8 +50,9 @@ void mergeSort(vector<int>& entrada, int inicio, int fim) {
     
     if(inicio<fim){
         
-        //int middle = inicio + (fim-inicio) / 2;
+
         int middle=(inicio+fim)/2;
+
         mergeSort(entrada, inicio, middle);
         mergeSort(entrada, middle + 1, fim);
         merge(entrada, inicio, middle, fim);
