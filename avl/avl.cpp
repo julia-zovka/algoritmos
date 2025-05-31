@@ -1,190 +1,180 @@
 using namespace std;
 #include <iostream>
-#include <string>
-#include<algorithm>
 #include <vector>
+#include <algorithm>
 
-template<typename Key,typename T>
-class BSTNode{
+
+template<typename Key>
+class AVLNode{
     public:
         Key key;
-        T element;
-        BSTNode* leftChild;
-        BSTNode* rightChild;
+        int height;
+        AVLNode* leftChild;
+        AVLNode* rightChild;
 
-        BSTNode (Key k , T e){
+        AVLNode (Key& k){
             this->key=k;
-            this->element=e;
+            this->height=0;
             this->leftChild=NULL;
             this->rightChild=NULL;
             
         }
 
-        BSTNode( Key& k,T& e ,BSTNode* lc, BSTNode* rc){
+        AVLNode( Key& k,AVLNode* lc, AVLNode* rc){
             this->key=k;
-            this->element=e;
+            this->height=max(getHeight(lc), getHeight(rc))+1;
             this->leftChild=lc;
             this->rightChild=rc;
         }
 
 };
 
-template<typename Key,  typename T>
-class BST {
+template<typename Key>
+class AVL{
     private:
-        BSTNode< Key, T>* root;
+        AVLNode<Key>* root;
         int nodecount;
 
     public:
-        BST(){
+        AVL(){
             this->root=NULL;
             this->nodecount=0;
         }
 
-        ~BST() {
+        ~AVL() {
         clearHelp(root);  // Libera todos os nós da árvore
         root = nullptr;
         nodecount = 0;
         }
 
-        int altura(){
-            return alturaHelp(root);
-        }
-        int alturaHelp(BSTNode<Key, T>* n){
-            if (n==NULL){
-                return -1;}
-            else{
-                return 1+ max(alturaHelp(n->leftChild), alturaHelp(n->rightChild));}
-        }    
-                    
-        void clearHelp(BSTNode<Key, T>* n) {
-        if (n == nullptr) return;
-        
-        clearHelp(n->leftChild);
-        clearHelp(n->rightChild);
-        delete n;
+        void clearHelp(AVLNode<Key>* n) {
+            if (n == nullptr) return;
+            
+            clearHelp(n->leftChild);
+            clearHelp(n->rightChild);
+            delete n;
         }
 
-        T find(Key k){
-            return findHelp(root,k);
+        int getHeight(AVLNode<Key>* n){
+            if(n==NULL){return -1;}
+            return n->height;
         }
 
-        T findHelp(BSTNode <Key, T>* n, Key k){
-            if (n== NULL) { return NULL ;}
-
-            if (n->key > k){//vai pro filho da esquerda
-                return findHelp(n->leftChild, k);}
-
-            else if (n->key == k){//achou
-                return n->element;}
-
-            else{// se for maior vai por filho da direita
-                return findHelp(n->rightChild, k);}
+        int getBalanceFactor(AVLNode<Key>* n){
+            if(n==NULL){return 0;}
+            return getHeight(n->leftChild) - getHeight(n->rightChild);
         }
-        
-        void insert( Key k, T e){
-            root=insertHelp(root, k, e);
+
+        AVLNode<Key>* Lrotate(AVLNode<Key>* n ){//right heavy
+            AVLNode<Key>* r=n->rightChild;
+            AVLNode<Key>* rl=r->leftChild;
+            r->leftChild=n;
+            n->rightChild=rl;
+            n->height=max(getHeight(n->leftChild), getHeight(n->rightChild))+1;
+            r->height=max(getHeight(r->leftChild), getHeight(r->rightChild))+1;
+            return r;
+        }
+        AVLNode<Key>* Rrotate(AVLNode<Key>* n){
+            AVLNode<Key>* l=n->leftChild;
+            AVLNode<Key>* lr=l->rightChild;
+            l->rightChild=n;
+            n->leftChild=lr;
+            n->height=max(getHeight(n->leftChild),getHeight(n->rightChild))+1;
+            l->height=max(getHeight(l->leftChild), getHeight(l->rightChild))+1;
+            return l;
+        }
+
+               
+        void insert( Key k){
+            root=insertHelp(root, k);
             nodecount++;
         }
 
-        BSTNode<Key, T>* insertHelp(BSTNode<Key , T>* n, Key k, T e){
+        AVLNode<Key>* insertHelp(AVLNode<Key>* n, Key k){
             if (n== NULL){
-                return  new BSTNode<Key, T> (k, e);}//cria
+                return  new AVLNode<Key> (k);}//cria
 
             if (n->key > k){
-                n->leftChild=insertHelp(n->leftChild, k, e);}
+                n->leftChild=insertHelp(n->leftChild, k);}
             else{// se que eu quero inserir é igual ou maior
-                n->rightChild= insertHelp(n->rightChild, k, e);}
+                n->rightChild= insertHelp(n->rightChild, k);}
+
+            //////////
+            n->height= 1+max(getHeight(n->leftChild), getHeight(n->rightChild));
+            int balance=getBalanceFactor(n);
+            if(balance<-1 && k>=n->rightChild->key){//right heavy
+                return Lrotate(n);
+            }
+            if(balance > 1 && k< n->leftChild->key){//left heavy
+                return Rrotate(n);
+            }
+            if(balance>1 && k>= n->leftChild->key){//left heavy       MEXE NA SUB DA ESQUERDA  E  DEPOSI  troca o a n
+                n->leftChild=Lrotate(n->leftChild);
+                return Rrotate(n);
+            }
+            if(balance<-1 && k<n->rightChild->key){//right heavy mexe na sub da direita e depois troca o n 
+                n->rightChild=Rrotate(n->rightChild);
+                return Lrotate(n);
+            }
             return n;
         }
 
-        T remove(Key k){
-            T temp =findHelp(root, k);
+       
 
-            if (temp != NULL){
-                root=removeHelp(root, k);
-                nodecount--;
-            }
-            return temp;
-        } 
+        // espaço de imprimir antess dos elementos ai náp tem espa;o depois do ultimo
 
-          BSTNode<Key, T>* removeHelp(BSTNode<Key, T>* n, Key k) {
-        if (n == NULL) {
-            return NULL;
-        }
-
-        if (n->key > k) {
-            n->leftChild = removeHelp(n->leftChild, k);
-        }
-        else if (n->key < k) {
-            n->rightChild = removeHelp(n->rightChild, k);
-        }
-        else { // Node found
-            if (n->leftChild == NULL) {
-                BSTNode<Key, T>* temp = n->rightChild;
-                delete n;
-                return temp;
-            }
-            else if (n->rightChild == NULL) {
-                BSTNode<Key, T>* temp = n->leftChild;
-                delete n;
-                return temp;
-            }
-            else { // Two children
-                BSTNode<Key, T>* temp = getMin(n->rightChild);
-                n->element = temp->element;
-                n->key = temp->key;
-                n->rightChild = deleteMin(n->rightChild);
+        void preOrder(AVLNode<Key>* n) {// raiz esquerda direita
+            if(n != NULL){
+                cout<< n->key<<" ";
+                preOrder(n->leftChild);
+                preOrder(n->rightChild);
             }
         }
-        return n;
-    }
+        
+        void inOrder(AVLNode<Key>* n) {// esquerda raiz direita
+            if (n != NULL){ 
+                inOrder(n->leftChild);
+                cout<< n->key<<" ";
+                inOrder(n->rightChild);}
+        }
 
-            BSTNode<Key, T>* getMin(BSTNode<Key, T>* n){
-                if (n->leftChild == NULL){
-                    return n;}
-                return getMin(n->leftChild);
-            }
+        void postOrder(AVLNode<Key>* n){// esquerda direita raiz
+            if (n != NULL){
+                postOrder(n->leftChild);
+                postOrder(n->rightChild);
+                cout<< n->key<<" ";
 
-            BSTNode<Key, T>* deleteMin(BSTNode<Key, T>* n){
-                if (n->leftChild == NULL){
-                    BSTNode<Key, T>* temp= n->rightChild;
-                    delete n;
-                    return temp;}
-                n->leftChild = deleteMin(n->leftChild);
-                return n;
             }    
-
-            // espaço de imprimir antess dos elementos ai náp tem espa;o depois do ultimo
-
-            void preOrder(BSTNode<Key, T>* n) {// raiz esquerda direita
-                if(n != NULL){
-                    cout<< n->key;
-                    preOrder(n->leftChild);
-                    preOrder(n->rightChild);
-                }
-            }
-            
-            void inOrder(BSTNode<Key, T>* n) {// esquerda raiz direita
-                if (n != NULL){ 
-                    inOrder(n->leftChild);
-                    cout<< n->key;
-                    inOrder(n->rightChild);}
-            }
-
-            void postOrder(BSTNode<Key, T>* n){// esquerda direita raiz
-                if (n != NULL){
-                    postOrder(n->leftChild);
-                    postOrder(n->rightChild);
-                    cout<< n->key;
-
-                }    
-            }
-            
-            BSTNode<Key, T>* getRoot() {
-                return root;
-            }
+        }
+        AVLNode<Key>* getRoot() {
+            return root;
+        }
 
 };
 
+int main(){
+    AVL<int> tree;
+    string entrada;
+    int query, num;
+    cin>>query;
+    for(int i=0; i<query;i++){
+        cin>>entrada;
+        if (entrada=="insert"){
+            cin>>num;
+            tree.insert(num);
+        }
+        else if(entrada=="pre"){
+            tree.preOrder(tree.getRoot());
+            cout<<endl;
+        }
+        else if (entrada=="in"){
+            tree.inOrder(tree.getRoot());
+            cout<<endl;
+        }
+        else{
+            tree.postOrder(tree.getRoot());
+            cout<<endl;
+        }
+    }
+}
 
