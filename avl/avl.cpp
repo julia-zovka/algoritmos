@@ -119,9 +119,11 @@ class AVL{
             return n;
         }
 
-       
-
-        // espaço de imprimir antess dos elementos ai náp tem espa;o depois do ultimo
+        ////pra delecoa mudar a latura no delete  min e 
+        //atualizar a altura dos nos pra cima
+        //depois de delete deposi da linha 13 fora do else maior
+        //e no delete min
+        
 
         void preOrder(AVLNode<Key>* n) {// raiz esquerda direita
             if(n != NULL){

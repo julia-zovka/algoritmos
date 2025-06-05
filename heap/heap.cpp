@@ -22,15 +22,15 @@ class Heap{
                 heap.push_back(b);
 
         }
-        void heaping(){
+        void heaping(){//bottom up~~~``~
             for(int i=size/2;i>=1;i--){
                 int k=i;
-                int v=heap[k];                          //chave
-                bool ordem=false;                       //ta errado
-                while( !ordem && 2*k<size){            //náo estrapolar o tamanho da vetor
-                    int j=2*k;                              // posicao filho 1
-                    if (j<size && heap[j]>heap[j+1] ){                        //tem mais de um filho
-                        j=j+1;}                   //posicao do filho maior
+                int v=heap[k];                         //chave
+                bool ordem=false;                      //ta errado
+                while( !ordem && 2*k<size){            //náo estrapolar o tamanho da vetor //saber se k [e um no interno  pq a comparacao [e entre o pai e seus filhos]
+                int j=2*k;                             // posicao filho 1
+                    if (j<size && heap[j]>heap[j+1] ){ //tem mais de um filho
+                        j=j+1;}                        //posicao do filho maior
                                                         
                     if (v<=heap[j]){
                         ordem=true;}
@@ -39,6 +39,7 @@ class Heap{
                         k=j;}
                     }
                 heap[k]=v;/// troca de lugar e bota o menor v que tava sendo analisado  no filho 
+                //so no final que atualiza o valor de k porque pode mudar mais de uma vez
             }
         }
 
