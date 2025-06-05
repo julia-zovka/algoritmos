@@ -44,7 +44,7 @@ class Heap{
         }
 
         void heapSort(){
-            int qnt_vezes=size;
+            int qnt_vezes=size-1;
             for(int i=0;i<qnt_vezes;i++){
                 int tchau=heap[1];
                 int new_root=heap[size];
