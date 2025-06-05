@@ -3,8 +3,9 @@
 using namespace std;
 
 //implementacao com array
-//bottom up - colocar toda a entrada e depois ajeitar
-//minimo no
+//top down
+//insercao compara com seu ai náo com  os filhos que nem na bottom up
+
 class Heap{
     private:
         int size;

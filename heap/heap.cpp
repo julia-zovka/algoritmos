@@ -44,8 +44,8 @@ class Heap{
         }
 
         void heapSort(){
-            int size_original=size;
-            for(int i=0;i<size;i++){
+            int qnt_vezes=size;
+            for(int i=0;i<qnt_vezes;i++){
                 int tchau=heap[1];
                 int new_root=heap[size];
                 heap[1]=new_root;
@@ -53,7 +53,6 @@ class Heap{
                 size--;
                 reheaping(1);   
             }
-            size=size_original;
 
         }
         void reheaping(int i){
