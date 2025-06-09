@@ -17,11 +17,16 @@ class Heap{
         heap.push_back(-1); // valor fictício no índice 0
         }
 
-        void insert( int b){
+        void insert(int b) {
             heap.push_back(b);
             size++;
-
+            int k = size;
+            while (k > 1 && heap[k / 2] < heap[k]) {
+                swap(heap[k], heap[k / 2]);
+                k = k / 2;
+            }
         }
+
         void remove(){
              if (size > 0) {
             heap.pop_back();
@@ -67,7 +72,7 @@ class Heap{
             bool ordem=false;                       //ta errado
             while( !ordem && 2*k<=size){            //náo estrapolar o tamanho da vetor
                 int j=2*k;                              // posicao filho 1
-                if (j<size && heap[j]<heap[j+1] ){                        //tem mais de um filho
+                if (j+1<=size && heap[j]<heap[j+1] ){                        //tem mais de um filho
                     j=j+1;}                   //posicao do filho maior
                                                     
                 if (v>=heap[j]){
@@ -89,9 +94,8 @@ class Heap{
 
         int popMaior(){
             int tchau=heap[1];
-            int new_root=heap[size];
-            heap[1]=new_root;
-            heap[size]=tchau;
+            heap[1]=heap[size];
+            heap.pop_back();
             size--;
             reheaping(1);   
             return tchau;
@@ -112,7 +116,7 @@ int main(){
             cin>>num;
             heap.insert(num);
         }
-        heap.heaping();
+        //heap.heaping();
         
         int y=0;
         while(heap.getSize()>=2){
@@ -120,7 +124,7 @@ int main(){
             int j2=heap.popMaior();
             y=j+j2-1;
             heap.insert(y);
-            heap.heaping();
+            //heap.heaping();
         }
         y=heap.popMaior();
         cout<<y<<endl;
