@@ -184,16 +184,16 @@ class AVL{
             // STEP 3: GET THE BALANCE FACTOR OF THIS 
             int balance = getBalance(n);
 
-            if (balance > 1 && getBalance(n->leftChild) >= 0)
-                return rightRotate(n);
+            if (balance > 1 && getBalance(n->leftChild) >= 0){
+                return rightRotate(n);}
 
             if (balance > 1 && getBalance(n->leftChild) < 0) {
                 n->leftChild = leftRotate(n->leftChild);
                 return rightRotate(n);
             }
 
-            if (balance < -1 && getBalance(n->rightChild) <= 0)
-                return leftRotate(n);
+            if (balance < -1 && getBalance(n->rightChild) <= 0){
+                return leftRotate(n);}
 
             if (balance < -1 && getBalance(n->rightChild) > 0) {
                 n->rightChild = rightRotate(n->rightChild);
