@@ -1,7 +1,7 @@
 using namespace std;
 #include <iostream>
-#include <vector>
-#include <algorithm>
+//#include <vector>
+//#include <algorithm>
 
 
 template<typename Key>
@@ -84,7 +84,23 @@ class AVL{
             return l;
         }
 
-               
+        int find(Key k){
+            return findHelp(root,k);
+        }
+
+        int findHelp(AVLNode <Key>* n, Key k){
+            if (n== NULL) { return -1 ;}
+
+            if (n->key > k){//vai pro filho da esquerda
+                return findHelp(n->leftChild, k);}
+
+            else if (n->key == k){//achou
+                return n->key;
+            }
+
+            else{// se for maior vai por filho da direita
+                return findHelp(n->rightChild, k);}
+        }       
         void insert( Key k){
             root=insertHelp(root, k);
             nodecount++;
@@ -119,12 +135,74 @@ class AVL{
             return n;
         }
 
-        ////pra delecoa mudar a latura no delete  min e 
-        //atualizar a altura dos nos pra cima
-        //depois de delete deposi da linha 13 fora do else maior
-        //e no delete min
-        
+        AVLNode<Key>* minValueNode(AVLNode<Key>* node) {
+            AVLNode<Key>* current = node;
+            while (current->leftChild != nullptr)
+                current = current->leftChild;
+            return current;
+        }
 
+            // It returns root of the modified subtree.
+        AVLNode<Key>* deleteNode(AVLNode<Key>* n, int key) {
+            if (n == nullptr){
+                return n;}
+            if (key < n->key){
+                n->leftChild = deleteNode(n->leftChild, key);}
+
+            else if (key > n->key){
+                n->rightChild = deleteNode(n->rightChild, key);}
+
+            else {
+                // node with only one child or no child
+                if ((n->left == nullptr) || 
+                    (n->right == nullptr)) {
+                    AVLNode<Key>* temp = n->leftChild ? 
+                                    n->leftChild : n->rightChild;
+                    // No child case
+                    if (temp == nullptr) {
+                        temp = n;
+                        n = nullptr;
+                    } else // One child case
+                        *n = *temp; // Copy the contents of 
+                                        // the non-empty child
+                    free(temp);
+                } 
+                else {//tem os dois filhos
+                    // inorder successor (smallest in he right subtree)
+                    AVLNode<Key>* temp = minValueNode(n->rightChild);
+                    n->key = temp->key;
+                    n->rightChild = deleteNode(n->rightChild, temp->key);
+                }
+            }
+            // If the tree had only one node then return
+            if (n == nullptr)
+                return n;
+
+            // STEP 2: UPDATE HEIGHT OF THE CURRENT NODE
+            n->height = 1 + max(height(n->leftChild),height(n->rightChild));
+
+            // STEP 3: GET THE BALANCE FACTOR OF THIS 
+            int balance = getBalance(n);
+
+            if (balance > 1 && getBalance(n->leftChild) >= 0)
+                return rightRotate(n);
+
+            if (balance > 1 && getBalance(n->leftChild) < 0) {
+                n->leftChild = leftRotate(n->leftChild);
+                return rightRotate(n);
+            }
+
+            if (balance < -1 && getBalance(n->rightChild) <= 0)
+                return leftRotate(n);
+
+            if (balance < -1 && getBalance(n->rightChild) > 0) {
+                n->rightChild = rightRotate(n->rightChild);
+                return leftRotate(n);
+            }
+
+            return n;
+            }
+        
         void preOrder(AVLNode<Key>* n) {// raiz esquerda direita
             if(n != NULL){
                 cout<< n->key<<" ";
