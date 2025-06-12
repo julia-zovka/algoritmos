@@ -17,11 +17,11 @@ class Heap{
         heap.push_back(-1); // valor fictício no índice 0
         }
 
-        void insert(int b) {
+        void insert(int b) {///top down 
             heap.push_back(b);
             size++;
             int k = size;
-            while (k > 1 && heap[k / 2] < heap[k]) {
+            while (k > 1 && heap[k / 2] < heap[k]) {/////compara se o pai [e ] menor
                 swap(heap[k], heap[k / 2]);
                 k = k / 2;
             }
@@ -33,7 +33,7 @@ class Heap{
             size--;
             }
         }
-        void heaping(){//bottom up~~~``~
+        void heaping(){//bottom up~~~  //// olha pro filho
             for(int i=size/2;i>=1;i--){
                 int k=i;
                 int v=heap[k];                         //chave
