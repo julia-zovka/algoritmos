@@ -6,40 +6,36 @@ using namespace std;
 
 class Graphs{
     private:
-        vector<vector<int>> matrix;
+        vector<vector<int>> lista;
         vector<int> mark;
         int numEdge;
         int numV;
 
     public:
         Graphs(int n ){
-            matrix.assign(n, vector<int>(n, 0));
+            lista.assign(n, vector<int>(0));
             mark.assign(n, 0);
             this->numEdge=0;
             this->numV=n;
         }
 
         int first(int v){
-            for(int i=0; i<numV;i++){
-                if (matrix[v][i]!=0){return i;}
-            }
+            if (int i=lista[v][0]!=0){return i;}
             return numV;
         }
         int next(int v, int w){//depois do no w 
-            for(int i=w+1;i<numV;i++){
-                if (matrix[v][i]!= 0){return i;}
-            }
+            if (lista[v][w+1]!= 0){return i;}
             return numV;//não existe proximo, nenhum vertice vai ter esse valor
             //retorna o indice que representa o no
         }
 
         void setEdge(int i, int j, int w){
             if(w==0){return;}
-            if(matrix[i][j]==0){
+            for(int i=0;i<numV;i++){
+                if
+            }
                 numEdge++;
             }
-            matrix[i][j]=w;
-        }
 
         void delEdge(int i, int j){
             if(matrix[i][j]!=0){
