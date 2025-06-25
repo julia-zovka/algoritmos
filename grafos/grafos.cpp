@@ -44,8 +44,8 @@ class Graphs{
         void delEdge(int i, int j){
             if(matrix[i][j]!=0){
                 numEdge--;
-                matrix[i][j]=0;
             }
+            matrix[i][j]=0;
         }
 
         void setMark(int v, int x){
@@ -57,10 +57,10 @@ class Graphs{
         }
 
         void traverse1(int v){
-           for( int i=0;i<=numV-1;i++){
+           for( int i=0;i<numV;i++){
                 setMark(i,0);//marcar como náo visitado
             }
-            for( int i=v;i<=numV-1;i++){
+            for( int i=v;i<numV;i++){
                 if(getMark(i)==0){
                     DFS(i);
                 };
@@ -69,15 +69,32 @@ class Graphs{
        
 
         void traverse2(int v){
-           for( int i=0;i<=numV-1;i++){
+           for( int i=0;i<numV;i++){
                 setMark(i,0);//marcar como náo visitado
             }
-            for( int i=v;i<=numV-1;i++){
+            for( int i=v;i<numV;i++){
                 if(getMark(i)==0){
                     BFS(i);
                 };
             }  
         }
+
+        void traverse3(int v){
+           for( int i=0;i<numV;i++){
+                setMark(i,0);//marcar como náo visitado
+            }
+            stack<int> s; 
+            for( int i=v;i<numV;i++){
+                if(getMark(i)==0){
+                    topSort(i, s);
+                };
+            }
+            while(!s.empty()) {
+                cout << s.top() << " ";
+                s.pop();
+            }  
+        }
+
 
         void preVisit(int v){
             cout<<v<<" ";
@@ -114,7 +131,7 @@ class Graphs{
             }
         }
 
-        void topSort(int v, Stack s){
+        void topSort(int v, stack<int>& s){
             setMark(v,1);
             int w=first(v);
             while(w<numV){

@@ -1,0 +1,1 @@
+{"name":"Local: grafos","url":"/home/julia/algoritmos/algoritmos/grafos/grafos.cpp","tests":[{"id":1750814822820,"input":"5 8\nadd 0 1\nadd 1 3\nadd 0 3\nadd 3 4\nadd 3 2\nadd 2 4\nBFS 0\nDFS 3","output":"0 1 3 2 4\n3 0 1 2 4"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/home/julia/algoritmos/algoritmos/grafos/grafos.cpp","group":"local","local":true}
