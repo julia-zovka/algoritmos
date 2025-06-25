@@ -6,48 +6,51 @@ using namespace std;
 
 class Graphs{
     private:
-        vector<vector<int>> matrix;
+        vector<vector<pair<int,int>>> lista;
         vector<int> mark;
         int numEdge;
         int numV;
 
     public:
         Graphs(int n ){
-            matrix.assign(n, vector<int>(n, 0));
+            lista.resize(n);
             mark.assign(n, 0);
             this->numEdge=0;
             this->numV=n;
         }
 
         int first(int v){
-            for(int i=0; i<numV;i++){
-                if (matrix[v][i]!=0){return i;}
-            }
+            if (!lista[v].empty()){
+                return lista[v][0].first;}
             return numV;
         }
 
-        int next(int v, int w){//depois do no w 
-            for(int i=w+1;i<numV;i++){
-                if (matrix[v][i]!= 0){return i;}
+        int next(int v, int w) {
+            for (int i = 0; i < lista[v].size(); i++) {
+                if (lista[v][i].first == w) {//acha w
+                    if (i + 1 < lista[v].size()) {// ve se tem proximo
+                        return lista[v][i+1].first;  
+                    }
+                }
             }
-            return numV;//não existe proximo, nenhum vertice vai ter esse valor
-            //retorna o indice que representa o no
+            return numV;  // Não encontrou w ou não tem próximo
         }
 
         void setEdge(int i, int j, int w){
             if(w==0){return;}
-            if(matrix[i][j]==0){
-                numEdge++;
-            }
-            matrix[i][j]=w;
-            matrix[j][i]=w;
+            lista[i].push_back({j,w});
+            numEdge++;
         }
 
         void delEdge(int i, int j){
-            if(matrix[i][j]!=0){
-                numEdge--;
+            bool achou=false;
+            for (auto it = lista[i].begin(); it != lista[i].end(); ++it){
+                if (it->first == j) {
+                    achou=true;
+                    lista[i].erase(it);
+                }
             }
-            matrix[i][j]=0;
+            numEdge--;
         }
 
         void setMark(int v, int x){
@@ -81,7 +84,7 @@ class Graphs{
             }  
         }
 
-        void traverse3(int v){
+         void traverse3(int v){
            for( int i=0;i<numV;i++){
                 setMark(i,0);//marcar como náo visitado
             }
@@ -96,7 +99,6 @@ class Graphs{
                 s.pop();
             }  
         }
-
 
         void preVisit(int v){
             cout<<v<<" ";
@@ -147,30 +149,16 @@ class Graphs{
 
 };
 
-
 int main(){
-    int n, q,i,j;
-    string op;
-    cin>>n;
-    cin>>q;
-    Graphs grafo(n);
-    for(int t=0;t<q;t++){
-        cin>>op;
-        if(op=="add"){
-            cin>>i;
-            cin>>j;
-            grafo.setEdge(i,j,1);
-        }
-        else if(op=="BFS"){
-            cin>>i;
-            grafo.traverse2(i);
-            cout<<endl;
-        }
-        else{
-            cin>>i;
-            grafo.traverse1(i);
-            cout<<endl;
-        }
-    }
-}
+    int ver, are,f,s;
+    cin>>ver;
+    cin>>are;
+    Graphs grafo(ver);
+    for(int i=0; i<are; i++){
+        cin>>f;
+        cin>>s;
+        grafo.setEdge(f,s,1);
 
+    }
+    grafo.traverse3(0);
+}
