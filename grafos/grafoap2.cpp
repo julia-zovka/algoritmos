@@ -50,7 +50,8 @@ class Graphs{
                     lista[i].erase(it);
                 }
             }
-            numEdge--;
+            if(achou){
+            numEdge--;}
         }
 
         void setMark(int v, int x){
