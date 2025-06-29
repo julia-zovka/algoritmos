@@ -197,25 +197,25 @@ int main(){
                 if( i>0 && proibido[i-1][j]==false){
                     int cima=(i-1)*m+j;
                     grafo.setEdge(atual,cima );
-                    grafo.setEdge(cima, atual);
+                    //grafo.setEdge(cima, atual);
                 }
                 //olhando pra baixo
                 if( i<n-1 && proibido[i+1][j]==false){
                     int baixo=(i+1)*m+j;
                     grafo.setEdge(atual,baixo );
-                    grafo.setEdge(baixo, atual);
+                    //grafo.setEdge(baixo, atual);
                 }
                 //esq
                 if( j>0 && proibido[i][j-1]==false){
                     int esquerda=i*m+(j-1);
                     grafo.setEdge(atual, esquerda);
-                    grafo.setEdge(esquerda, atual);
+                    //grafo.setEdge(esquerda, atual);
                 }
                 //dir
                 if(j<m-1 && proibido[i][j+1]==false){
                     int direita=i*m+(j+1);
                     grafo.setEdge(atual, direita);
-                    grafo.setEdge(direita, atual);
+                   // grafo.setEdge(direita, atual);
 
                 }
             }
