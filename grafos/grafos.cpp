@@ -44,10 +44,11 @@ class Graphs{
         }
 
         void delEdge(int i, int j){
-            if(matrix[i][j]!=0){
+            if(matrix[i][j]!=0 and matrix[j][i]!=0){
                 numEdge--;
             }
             matrix[i][j]=0;
+             matrix[j][i]=0;
         }
 
         void setMark(int v, int x){
