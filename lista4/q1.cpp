@@ -27,7 +27,6 @@ void dijkstra(vector<vector<pair<int,int>>> &grafo, int s, vector<int> &distance
             if(heap.empty()){return;};
             tie(dist,p,v)=heap.top();
             heap.pop();
-            //if(v==NULL){return;}
         }while(mark[v]==1);// qusnod achar um que não foi visitado
     
         mark[v]=1;
@@ -49,28 +48,37 @@ void setEdgee(vector<vector<pair<int,int>>> &grafo, int i, int j, int w){
         }
 
 int main(){
-    int n,e,s,a,b,w;
-    cin>> n >> e >>s;
+    int cases,n,m,s,t,a,b,w;
+    cin>>cases;
+    for(int r=0;r<cases;r++){
 
-    vector<vector<pair<int,int>>> grafo;
-    vector<int> pred;
-    vector<int> mark;
-    vector<int> distance;
+        cin>> n >> m >>s>>t;
 
-    pred.assign(n,-1);
-    mark.assign(n,0);
-    distance.assign(n,INT_MAX);
+        vector<vector<pair<int,int>>> grafo;
+        vector<int> pred;
+        vector<int> mark;
+        vector<int> distance;
+
+        pred.assign(n,-1);
+        mark.assign(n,0);
+        distance.assign(n,INT_MAX);
+        grafo.resize(n);
 
 
-    grafo.resize(n);
-    for(int i=0;i<e;i++){
-        cin>> a >> b >>w;
-        setEdgee(grafo,a,b,w);
+        for(int i=0;i<m;i++){
+            cin>> a >> b >>w;
+            setEdgee(grafo,a,b,w);
+        }
+        dijkstra(grafo, s, distance,mark, pred, n);
+        if(m==0){cout<<"Case #"<<r+1<<": unreachable"<<endl;}      
+
+
+        else{
+            int res=distance[t];
+            if(res==-1){
+                cout<<"Case #"<<r+1<<": unreachable"<<endl;}      
+            else{
+                cout<<"Case #"<<r+1<<": "<<res<<endl;}
+        }
     }
-    dijkstra(grafo, s, distance,mark, pred, n);
-
-    for(auto i :distance){
-        cout<<i<<" ";
-    }
-    cout<<endl;
 }
