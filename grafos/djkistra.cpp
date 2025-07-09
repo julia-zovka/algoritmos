@@ -47,7 +47,7 @@ void dijkstra(vector<vector<pair<int,int>>> &grafo, int s, vector<int> &distance
         mark[v]=1;
         pred[v]=p;
         for(auto [proximo,peso]: grafo[v]){/// first e next de v
-            if ((mark[proximo]!=1 && distance[proximo]> distance[v]+peso) || distance[proximo]==-1){
+            if (mark[proximo]!=1 && (distance[proximo]> distance[v]+peso || distance[proximo]==-1)){
                 distance[proximo]=distance[v]+peso;
                 heap.push({distance[proximo],v,proximo});
             }
