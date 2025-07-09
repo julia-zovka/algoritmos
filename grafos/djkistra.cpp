@@ -11,6 +11,7 @@
 #include <tuple>
 #include <algorithm> 
 #include <queue>
+#include <bits/stdc++.h>
 using namespace std;
 
 /*
@@ -30,13 +31,12 @@ heap -tamnhao n de tuplas int int int
 void dijkstra(vector<vector<pair<int,int>>> &grafo, int s, vector<int> &distance, vector<int> &mark, vector<int> &pred,int n){
     
 
-    priority_queue<tuple<int, int, int>, vector<tuple<int, int, int>>, greater<>> heap;    
+    priority_queue<tuple<int, int, int>, vector<tuple<int, int, int>>, greater<tuple<int, int, int>>> heap;    
     heap.push({0,s,s});// distancia,pre,atual 
     distance[s]=0;
 
+    int dist,p,v;// pre e v é o atual  -- essas informaçoes ficam na heap junto ocm diatancia
     for(int i=0;i<n;i++){
-            int dist,p,v;// pre e v é o atual  -- essas informaçoes ficam na heap junto ocm diatancia
-
         do{
             if(heap.empty()){return;};
             tie(dist,p,v)=heap.top();
@@ -47,7 +47,7 @@ void dijkstra(vector<vector<pair<int,int>>> &grafo, int s, vector<int> &distance
         mark[v]=1;
         pred[v]=p;
         for(auto [proximo,peso]: grafo[v]){/// first e next de v
-            if (mark[proximo]!=1 && (distance[proximo]> distance[v]+peso || distance[proximo]==-1)){
+            if (mark[proximo]!=1 && distance[proximo]> distance[v]+peso){
                 distance[proximo]=distance[v]+peso;
                 heap.push({distance[proximo],v,proximo});
             }
@@ -59,6 +59,7 @@ void dijkstra(vector<vector<pair<int,int>>> &grafo, int s, vector<int> &distance
 void setEdgee(vector<vector<pair<int,int>>> &grafo, int i, int j, int w){
             if(w==0){return;}
             grafo[i].push_back({j,w});
+            grafo[j].push_back({i,w});
         }
 
 int main(){
@@ -72,7 +73,7 @@ int main(){
 
     pred.assign(n,-1);
     mark.assign(n,0);
-    distance.assign(n,-1);
+    distance.assign(n,INT_MAX);
 
 
     grafo.resize(n);
