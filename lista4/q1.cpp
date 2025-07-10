@@ -42,10 +42,9 @@ void dijkstra(vector<vector<pair<int,int>>> &grafo, int s, vector<int> &distance
 
 
 void setEdgee(vector<vector<pair<int,int>>> &grafo, int i, int j, int w){
-            if(w==0){return;}
-            grafo[i].push_back({j,w});
-            grafo[j].push_back({i,w});
-        }
+        grafo[i].push_back({j,w});
+        grafo[j].push_back({i,w});
+    }
 
 int main(){
     int cases,n,m,s,t,a,b,w;
@@ -75,7 +74,7 @@ int main(){
 
         else{
             int res=distance[t];
-            if(res==-1){
+            if(res==INT_MAX){
                 cout<<"Case #"<<r+1<<": unreachable"<<endl;}      
             else{
                 cout<<"Case #"<<r+1<<": "<<res<<endl;}
