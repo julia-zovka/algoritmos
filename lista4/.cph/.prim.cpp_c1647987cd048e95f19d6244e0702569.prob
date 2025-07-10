@@ -1,0 +1,1 @@
+{"name":"Local: prim","url":"/home/CIN/jzs/Desktop/algo/algoritmos/lista4/prim.cpp","tests":[{"id":1752175316119,"input":"3 3\n0 1 3\n1 2 4\n2 1 5\n2 0\n0 0","output":"4\nIMPOSSIBLE"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/home/CIN/jzs/Desktop/algo/algoritmos/lista4/prim.cpp","group":"local","local":true}

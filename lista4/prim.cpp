@@ -34,10 +34,11 @@ void prim(vector<vector<pair<int,int>>> &grafo, int s, vector<int> &distance, ve
 }
 
 
-void setEdgee(vector<vector<pair<int,int>>> &grafo, int i, int j, int w){
+void setEdgee(vector<vector<pair<int,int>>> &grafo, int i, int j, int w, int numEdge){
             if(w==0){return;}
             grafo[i].push_back({j,w});
             grafo[j].push_back({i,w});
+            numEdge++;
         }
 bool conexo(vector<int> &distance){
     for(int dist:distance){
@@ -51,6 +52,7 @@ bool conexo(vector<int> &distance){
 int main(){
     int n,e,s,d,a,b,w;
     cin>> n >> e;
+    int numEdge;
 
     vector<vector<pair<int,int>>> grafo;
     vector<int> pred;
@@ -65,7 +67,7 @@ int main(){
         grafo.resize(n);
         for(int i=0;i<e;i++){
             cin>> a >> b >>w;
-            setEdgee(grafo,a,b,w);
+            setEdgee(grafo,a,b,w, numEdge);
         }
         cin>>s>>d;
         
@@ -82,7 +84,7 @@ int main(){
         bool caminho=false;
         if(meio==s){caminho=true;}
         if(caminho){cout<<maior<<endl;}
-        if(caminho==false || conexo(distance)==false){cout<<"IMPOSSIBLE"<<endl;}
+        if(caminho==false || numEdge<(n*(n-1))){cout<<"IMPOSSIBLE"<<endl;}
         cin>>n>>e;
     }
 }
