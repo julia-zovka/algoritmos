@@ -1,0 +1,65 @@
+#include <climits>
+#include <queue>
+#include <vector>
+#include <tuple>
+#include <iostream>
+using namespace std;
+ 
+ 
+ 
+ 
+ 
+ 
+void prim(vector<int> &mark, vector<int> &pred, vector<int> &distance, vector<vector<pair<int,int>>> &grafo, int n ,int s){
+    priority_queue<tuple<int,int,int>, vector<tuple<int,int,int>>, greater<tuple<int,int,int>>> heap;
+    heap.push({0,s,s});//////// dist,p, no
+    distance[s]=0;
+ 
+    int dist, p, v;
+    for(int j=0;j<n;j++){
+        do{ 
+            if(heap.empty()){return;};
+            tie(dist,p,v)=heap.top();
+            heap.pop();
+        }while( mark[v]==1);
+ 
+        mark[v]=1;
+        pred[v]=p;
+ 
+        for(auto [proximo,peso]: grafo[v]){
+            if(mark[proximo]==0 && distance[proximo]>peso){
+                distance[proximo]=peso;
+                heap.push({peso,v,proximo});
+            }
+        }
+    }
+ 
+}
+ 
+ 
+ 
+ 
+ 
+int main(){
+    int ci, ob, a, b,w,soma;
+    cin>>ci>>ob;/// cidades = nos   obras = arestas
+    vector<int> mark(ci,0);
+    vector<int> pred(ci,-1);
+    vector<int> distance(ci,INT_MAX);
+    vector<vector<pair<int,int>>> grafo(ci, vector<pair<int,int>>());
+ 
+    for(int i=0;i<ob;i++){
+        cin>>a>>b>>w;
+        grafo[a].push_back({b,w});
+        grafo[b].push_back({a,w});
+    }
+ 
+    prim(mark, pred, distance, grafo,ci,0);
+ 
+    for(int s :distance){
+        soma+=s;
+    }
+    cout<<soma<<endl;
+ 
+    
+}
