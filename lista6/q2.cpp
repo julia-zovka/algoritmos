@@ -1,33 +1,36 @@
 #include <vector>
 #include <iostream>
-#include <climits>
+#include <algorithm>
+
 using namespace std;
 
-
 int main(){
-    int l_original, l_new, cost_in, cost_rem, cost_mod, cost;
+    long long l_original, l_new, cost_in, cost_rem, cost_mod, cost;
     cin>> l_original>> l_new>>cost_in>>cost_rem>> cost_mod;
+
+    vector<vector<long long >> operacao(l_original+1, vector<long long>(l_new+1));
 
     string ogP, newP;
     cin>>ogP>>newP;
-    //capital and lower are different
+    for(int i=0;i<=l_original;i++){//custo pra deletar tudoo
+        operacao[i][0]=i*cost_rem;
+    }
 
-    cost=0;
-    //checar se a p
-    for(int i=0;i<l_original;i++){
-       
-        //nova menor 
-        if(i<l_new){// se ainda [e um indice validona nova, pode ter removido letras
-            if(ogP[i]!=newP[i]){//mudou letra
-                cost+=cost_mod;
+    for(int j=0;j<=l_new;j++){//cusot pra inserir tudo
+        operacao[0][j]=j*cost_in;
+    }
+
+    for(int i=1;i<=l_original;i++){
+        for(int j=1;j<=l_new;j++){
+            if(ogP[i-1]==newP[j-1]){
+                operacao[i][j]=operacao[i-1][j-1];
+            }
+            else{
+                operacao[i][j]=min({operacao[i-1][j]+cost_rem, operacao[i][j-1]+cost_in, operacao[i-1][j-1]+cost_mod});
             }
         }
-        
-        //o indice da antiga extrapolou a da pavra nova == inserting letras
-        else{
-            cost+=cost_in;
-        }
     }
-    if(l_original>l_new){cost+=cost_rem(l_new-l_original)}
 
-}   
+    cost=operacao[l_original][l_new];
+    cout<<cost<<endl;
+}

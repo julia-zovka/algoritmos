@@ -29,9 +29,8 @@ int main(){
     //i [e o que vai oassear pelas valores
 
     /// troca pra seis usando uma moedinha da menor depois usando uma moedinha da emdia e vai subindo +1 que [e esa final]
-    int temp, j;
+    int j;
     for(int i=1;i<=sum;i++){
-        temp=INT_MAX;
         j=1;
         for(int j=0;j<n;j++){
             if(i>=coins[j] && v_sum[i - coins[j]] != INT_MAX){// como [e bottom up o anteriro ja t[a calculado]]
